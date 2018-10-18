@@ -24,9 +24,9 @@ fn main() {
         .version("1.0")
         .about("prepare a star entertainer image")
         .author("Nicolas Brueggemann")
-        .arg(Arg::with_name("full")
-            .short("f")
-            .long("full")
+        .arg(Arg::with_name("prepare")
+            .short("p")
+            .long("prepare")
             .help("Make full preperation")
             .takes_value(false))
         .arg(Arg::with_name("shell")
@@ -43,10 +43,10 @@ fn main() {
 
     let se_path = Path::new("c:/jackpot");
     if se_path.exists() == false {
-        println!("SE does not exists");
+        eprintln!("SE does not exists");
     }
 
-    if matches.is_present("full") {
+    if matches.is_present("prepare") {
         // 1) remove TJNC settings
         {
             let tjnc_path = se_path.join("tjnc");
@@ -62,16 +62,14 @@ fn main() {
 
     // RUN AS SHELL
     if matches.is_present("shell") {
-        // hey there...
-        // run software as a shell helper...
         println!("start shell");
-        starter::run_starter(se_path.clone());
+        starter::run_starter(se_path.clone().to_str().unwrap());
     }
 
     // MQTT Connection
     if matches.is_present("mqtt") {
         println!("start mqtt client connection");
-        mqtt::run_mqtt(se_path.clone());
+        mqtt::run_mqtt(se_path.clone().to_str().unwrap());
     }
 
 
@@ -107,7 +105,7 @@ fn remove_file(filename: &str) {
 
 }
 
-fn reset_registry() {
+//fn reset_registry() {
    /* let hkcu = RegKey::predef(HKEY_CURRENT_USER);
     {
         // always create key / ort open key..
@@ -125,7 +123,7 @@ fn reset_registry() {
         let key = hkcu.open_subkey(&path).unwrap();
 
     }*/
-}
+//}
 
 // 1) look for se folder
 // 2) remove non static files

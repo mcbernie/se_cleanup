@@ -6,7 +6,8 @@ use mqtt3::{Packet, QoS};
 use std::path::{Path};
 
 
-pub fn run_mqtt(path: &Path) {
+pub fn run_mqtt(path_str: &'static str) {
+    //let path = Path::new(path_str);
     let mymac = get_mac();
     println!("my mac is: {}", &mymac);
 
@@ -24,7 +25,7 @@ pub fn run_mqtt(path: &Path) {
     println!("subscribe...");
     tx.subscribe(vec![(topic.clone(), QoS::AtLeastOnce)]).expect("Error subscribing");
 
-    let t = thread::spawn(move || {
+    let _t = thread::spawn(move || {
         
         let tx = Arc::new(RwLock::new(tx));
 
@@ -40,7 +41,7 @@ pub fn run_mqtt(path: &Path) {
                             },
                             x if x.contains("vnc|") => {
                                 println!("get vnc, open vnc");
-                                open_vnc(path, x.to_string().split("|").collect::<Vec<_>>().last().unwrap());
+                                open_vnc(path_str, x.to_string().split("|").collect::<Vec<_>>().last().unwrap());
                             },
                             _ => {
                                 println!("{}? kenn ich nicht!", string);
@@ -69,7 +70,7 @@ fn send_reply(tx: Arc<RwLock<MqttClient>>, topic: String, reply: String) {
 }
 
 /// open vnc single client click on client
-fn open_vnc(path: &Path, port: &str) {
+fn open_vnc(path_str: &str, port: &str) {
     use std::error::Error;
     use std::io::prelude::*;
     use std::fs::OpenOptions;
@@ -77,6 +78,7 @@ fn open_vnc(path: &Path, port: &str) {
 
     println!("open_vnc to port: {}", port);
     // Files and path
+    let path = Path::new(path_str);
     let template_path = path.join("helpdesk.vorlage.txt");
     let path = path.join("Helpdesk.txt");
     let remote_command = path.join("remotehelp.exe");
