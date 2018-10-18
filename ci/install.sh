@@ -43,3 +43,5 @@ main() {
            --tag $tag \
            --target $target
 }
+
+main
