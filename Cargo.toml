@@ -2,6 +2,7 @@
 name = "se_cleanup"
 version = "0.1.0"
 authors = ["Nicolas Brüggemann <nbrueggemann@itcoops.de>"]
+bin="main"
 
 [dependencies]
 clap = "*"
