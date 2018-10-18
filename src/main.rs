@@ -1,16 +1,13 @@
 extern crate clap;
-extern crate winreg;
+//extern crate winreg;
 
 use clap::{Arg, App};
 
 use std::path::{Path, PathBuf};
 use std::fs;
 
-use winreg::RegKey;
-use winreg::enums::*;
-
-
-
+//use winreg::RegKey;
+//use winreg::enums::*;
 
 fn main() {
     let matches = App::new("se_prepper")
@@ -29,16 +26,12 @@ fn main() {
             .takes_value(false))
         .get_matches();
 
-    let make_full = matches.is_present("full");
-    let make_shell = matches.is_present("shell");
-
     let se_path = Path::new("c:/jackpot");
-
     if se_path.exists() == false {
         panic!("Jackpot Path does not Exists!");
     }
 
-    if make_full {
+    if matches.is_present("full") {
         // 1) remove TJNC settings
         {
             let tjnc_path = se_path.join("tjnc");
@@ -52,14 +45,14 @@ fn main() {
 
     }
 
-    if make_shell {
+    if matches.is_present("shell") {
         // hey there...
         // run software as a shell helper...
         use std::process::Command;
 
         Command::new(se_path.join("jackstarter.exe"))
             .spawn()
-            .expect("failed to start jackstarter.exe")
+            .expect("failed to start jackstarter.exe");
 
         loop {
             // make endless loop 
@@ -93,7 +86,7 @@ fn remove_file(filename: &str) {
 }
 
 fn reset_registry() {
-    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+   /* let hkcu = RegKey::predef(HKEY_CURRENT_USER);
     {
         // always create key / ort open key..
         let path = Path::new("Software").join("VB and VBA Program Settings");
@@ -109,7 +102,7 @@ fn reset_registry() {
 
         let key = hkcu.open_subkey(&path).unwrap();
 
-    }
+    }*/
 }
 
 // 1) look for se folder
