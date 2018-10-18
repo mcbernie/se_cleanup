@@ -1,10 +1,20 @@
 extern crate clap;
+extern crate rumqtt;
+extern crate mqtt3;
+extern crate interfaces;
 //extern crate winreg;
 
 use clap::{Arg, App};
 
 use std::path::{Path, PathBuf};
 use std::fs;
+
+use std::thread;
+use std::time::Duration;
+
+
+mod mqtt;
+mod starter;
 
 //use winreg::RegKey;
 //use winreg::enums::*;
@@ -24,6 +34,11 @@ fn main() {
             .long("shell")
             .help("Run as Shell")
             .takes_value(false))
+        .arg(Arg::with_name("mqtt")
+            .short("m")
+            .long("mqtt")
+            .help("Start MQTT Connection")
+            .takes_value(false))            
         .get_matches();
 
     let se_path = Path::new("c:/jackpot");
@@ -45,18 +60,25 @@ fn main() {
 
     }
 
+    // RUN AS SHELL
     if matches.is_present("shell") {
         // hey there...
         // run software as a shell helper...
-        use std::process::Command;
+        println!("start shell");
+        starter::run_starter(se_path.clone());
+    }
 
-        Command::new(se_path.join("jackstarter.exe"))
-            .spawn()
-            .expect("failed to start jackstarter.exe");
+    // MQTT Connection
+    if matches.is_present("mqtt") {
+        println!("start mqtt client connection");
+        mqtt::run_mqtt(se_path.clone());
+    }
 
+
+    // run endless loop....
+    if matches.is_present("shell") || matches.is_present("mqtt") {
         loop {
-            // make endless loop 
-            // if system is breaking, software will restart
+            thread::sleep(Duration::from_millis(1000));
         }
     }
 
