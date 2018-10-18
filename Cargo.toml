@@ -1,0 +1,8 @@
+[package]
+name = "se_cleanup"
+version = "0.1.0"
+authors = ["Nicolas Brüggemann <nbrueggemann@itcoops.de>"]
+
+[dependencies]
+clap = "*"
+winreg = "0.5"
