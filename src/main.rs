@@ -28,7 +28,7 @@ fn main() {
 
     let se_path = Path::new("c:/jackpot");
     if se_path.exists() == false {
-        panic!("Jackpot Path does not Exists!");
+        println!("SE does not exists");
     }
 
     if matches.is_present("full") {
