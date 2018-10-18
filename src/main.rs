@@ -1,7 +1,7 @@
 extern crate clap;
 extern crate rumqtt;
 extern crate mqtt3;
-extern crate interfaces;
+extern crate mac_address;
 //extern crate winreg;
 
 use clap::{Arg, App};

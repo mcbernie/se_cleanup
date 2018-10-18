@@ -8,5 +8,4 @@ bin="main"
 clap = "*"
 rumqtt = { git = "https://github.com/AtherEnergy/rumqtt", branch = "tokio2"}
 mqtt3 = { git = "https://github.com/tekjar/mqtt3" }
-interfaces = "0.0.3"
-#winreg = "0.5"
+mac_address = "0.8.0"

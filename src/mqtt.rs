@@ -37,9 +37,9 @@ pub fn run_mqtt(path_str: &'static str) {
                         match string.as_ref() {
                             "ping" => {
                                 println!("get ping, send pong");
-                                send_reply(Arc::clone(&tx), sender_topic.clone(), "pong".to_owned());
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), "shellpong".to_owned());
                             },
-                            x if x.contains("vnc|") => {
+                            x if x.contains("shellvnc|") => {
                                 println!("get vnc, open vnc");
                                 open_vnc(path_str, x.to_string().split("|").collect::<Vec<_>>().last().unwrap());
                             },
@@ -115,15 +115,18 @@ fn open_vnc(path_str: &str, port: &str) {
 
 
 fn get_mac() -> String {
-    use interfaces::{Interface};
-    let ifs = Interface::get_all().expect("could not get interfaces");
+    //use interfaces::{Interface};
+    use mac_address::get_mac_address;
 
     let mut mac : String = "0000000000".to_string();
-    for i in ifs.iter() {
-        if i.is_up() && !i.is_loopback() {
-            mac = i.hardware_addr().unwrap().as_bare_string();
-            break;
+    
+    match get_mac_address() {
+        Ok(Some(ma)) => {
+            mac = ma.to_string().replace(":", "");
         }
+        Ok(None) => println!("no mac found"),
+        Err(e) => println!("{:?}", e),
     }
+
     mac.to_uppercase()
 }
