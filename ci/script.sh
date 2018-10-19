@@ -9,20 +9,18 @@ main() {
     export OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
     export OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
 
-    cross build --target $TARGET
-    cross build --target $TARGET --release
+    env OPENSSL_STATIC=0 OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw cross build --target $TARGET
+    env OPENSSL_STATIC=0 OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw cross build --target $TARGET --release
 
     if [ ! -z $DISABLE_TESTS ]; then
         return
     fi
 
-    cross test --target $TARGET
-    cross test --target $TARGET --release
+    #cross test --target $TARGET
+    #cross test --target $TARGET --release
 
-
-
-    cross run --target $TARGET
-    cross run --target $TARGET --release
+    #cross run --target $TARGET
+    #cross run --target $TARGET --release
 }
 
 # we don't run the "test phase" when doing deploys
