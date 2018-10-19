@@ -9,8 +9,8 @@ main() {
     export OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
     export OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
 
-    env OPENSSL_STATIC=0 OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw cross build --target $TARGET
-    env OPENSSL_STATIC=0 OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw cross build --target $TARGET --release
+    env OPENSSL_STATIC=0 OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include cargo build --target $TARGET
+    env OPENSSL_STATIC=0 OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include cargo build --target $TARGET --release
 
     if [ ! -z $DISABLE_TESTS ]; then
         return
