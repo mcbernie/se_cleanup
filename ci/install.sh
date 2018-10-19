@@ -46,6 +46,7 @@ main() {
     curl -LSfs "https://bintray.com/vszakats/generic/download_file?file_path=openssl-1.1.1-win64-mingw.tar.xz" > /tmp/unpack.tar.xz 
     tar -xf /tmp/unpack.tar.xz -C /tmp
     ls -All /tmp
+    ls -All /tmp/openssl-1.1.1-win64-mingw
 }
 
 main
