@@ -24,11 +24,11 @@ main() {
     export OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
 
     # TODO Update this to build the artifacts that matter to you
-    cargo rustc --target $TARGET --release -- -C lto
+    cross rustc --target $TARGET --release -- -C lto
 
     # TODO Update this to package the right artifacts
-    cp target/$TARGET/release/se_cleanup $stage/
-    cp target/$TARGET/release/se_cleanup.exe $stage/
+    cp target/$TARGET/release/se_shell $stage/
+    cp target/$TARGET/release/se_shell.exe $stage/
 
     cd $stage
     tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
