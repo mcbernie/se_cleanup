@@ -1,7 +1,7 @@
 extern crate clap;
 extern crate rumqtt;
 extern crate mqtt3;
-extern crate mac_address;
+
 //extern crate winreg;
 
 use clap::{Arg, App};
@@ -38,43 +38,60 @@ fn main() {
             .short("m")
             .long("mqtt")
             .help("Start MQTT Connection")
-            .takes_value(false))            
+            .takes_value(false))   
+        .arg(Arg::with_name("nodefault")
+            .short("n")
+            .long("no")
+            .help("Dont run with default behavior")
+            .takes_value(false))                        
         .get_matches();
 
     let se_path = Path::new("c:/jackpot");
-    if se_path.exists() == false {
-        eprintln!("SE does not exists");
+
+    let mut run_shell = false;
+    let mut run_mqtt = false;
+
+    if se_path.exists() {
+        if matches.is_present("nodefault")  {
+            if matches.is_present("shell") {
+                run_shell = true;
+            }
+            if matches.is_present("mqtt") {
+                run_mqtt = true;
+            }            
+        } else {
+            if cfg!(target_os = "windows") {
+                run_shell = true;
+                run_mqtt = true;
+            }
+        }
     }
 
     if matches.is_present("prepare") {
-        // 1) remove TJNC settings
         {
             let tjnc_path = se_path.join("tjnc");
             remove_bunch_of_files(tjnc_path, vec!("tjnc.ini", "tjnc.ini.bak"));
         }
-
         {
             let tjnc_path = se_path.join("tjnc").join("");
             remove_bunch_of_files(tjnc_path, vec!("tjnc.ini", "tjnc.ini.bak"));
         }
-
     }
 
     // RUN AS SHELL
-    if matches.is_present("shell") {
+    if run_shell {
         println!("start shell");
         starter::run_starter(se_path.clone().to_str().unwrap());
     }
 
     // MQTT Connection
-    if matches.is_present("mqtt") {
+    if run_mqtt {
         println!("start mqtt client connection");
         mqtt::run_mqtt(se_path.clone().to_str().unwrap());
     }
 
-
     // run endless loop....
-    if matches.is_present("shell") || matches.is_present("mqtt") {
+    if run_shell || run_mqtt {
         loop {
             thread::sleep(Duration::from_millis(1000));
         }

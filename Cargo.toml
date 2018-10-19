@@ -1,11 +1,9 @@
 [package]
-name = "se_cleanup"
-version = "0.1.0"
+name = "se_shell"
+version = "0.1.1"
 authors = ["Nicolas Brüggemann <nbrueggemann@itcoops.de>"]
-bin="main"
 
 [dependencies]
-clap = "*"
+clap = "2.32.0"
 rumqtt = { git = "https://github.com/AtherEnergy/rumqtt", branch = "tokio2"}
 mqtt3 = { git = "https://github.com/tekjar/mqtt3" }
-mac_address = "0.8.0"
