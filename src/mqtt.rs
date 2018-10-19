@@ -5,6 +5,7 @@ use rumqtt::{MqttOptions, MqttClient, ReconnectOptions, SecurityOptions};
 use mqtt3::{Packet, QoS};
 use std::path::{Path};
 
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 pub fn run_mqtt(path_str: &'static str) {
     //let path = Path::new(path_str);
@@ -35,6 +36,7 @@ pub fn run_mqtt(path_str: &'static str) {
                             "ping" => {
                                 println!("get ping, send pong");
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "shellpong".to_owned());
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("Shell Version:{}", VERSION).to_owned());
                             },
                             x if x.contains("shellvnc|") => {
                                 println!("get vnc, open vnc");

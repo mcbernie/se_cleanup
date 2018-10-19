@@ -12,7 +12,10 @@ sudo: required
 env:
   global:
     # TODO Update this to match the name of your project.
-    - CRATE_NAME=se_cleanup
+    - CRATE_NAME=se_shell
+    - OPENSSL_STATIC=0
+    - OPENSSL_LIB_DIR=~/openssl-1.1.1-win64-mingw/lib
+    - OPENSSL_INCLUDE_DIR=~/openssl-1.1.1-win64-mingw/include
 
 matrix:
   # TODO These are all the build jobs. Adjust as necessary. Comment out what you
@@ -88,8 +91,13 @@ before_install:
   - rustup self update
 
 install:
+  - curl -LSfs "https://bintray.com/vszakats/generic/download_file?file_path=openssl-1.1.1-win64-mingw.tar.xz" > ~/unpack.tar.xz 
+  - mkdir ~/ssl
+  - tar -xf ~/unpack.tar.xz -C ~/
+  
   - sh ci/install.sh
   - source ~/.cargo/env || true
+
 
 script:
   - bash ci/script.sh

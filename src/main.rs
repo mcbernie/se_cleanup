@@ -1,3 +1,6 @@
+#![windows_subsystem = "windows"]
+#[macro_use] extern crate self_update;
+
 extern crate clap;
 extern crate rumqtt;
 extern crate mqtt3;
@@ -61,6 +64,10 @@ fn main() {
             }            
         } else {
             if cfg!(target_os = "windows") {
+                println!("check for updates");
+                if let Err(e) = update() {
+                    eprintln!("error on make update {:?}", e)
+                }
                 run_shell = true;
                 run_mqtt = true;
             }
@@ -93,7 +100,10 @@ fn main() {
     // run endless loop....
     if run_shell || run_mqtt {
         loop {
-            thread::sleep(Duration::from_millis(1000));
+            if let Err(e) = update() {
+                println!("error on update... {:?}", e);
+            }
+            thread::sleep(Duration::from_millis(5000));
         }
     }
 
@@ -149,3 +159,18 @@ fn remove_file(filename: &str) {
 // 5) determine hardware number
 // 6) install ocx or dll
 // 7) look if dx is installed, if not install it
+
+fn update() -> Result<(), Box<::std::error::Error>> {
+    let target = self_update::get_target()?;
+    let status = self_update::backends::github::Update::configure()?
+        .repo_owner("mcbernie")
+        .repo_name("se_cleanup")
+        .target(&target)
+        .bin_name("se_shell")
+        .show_download_progress(true)
+        .current_version(cargo_crate_version!())
+        .build()?
+        .update()?;
+    println!("Update status: `{}`!", status.version());
+    Ok(())
+}
