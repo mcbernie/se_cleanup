@@ -71,7 +71,10 @@ matrix:
 
     # Windows
     - env: TARGET=x86_64-pc-windows-gnu
-
+    - env: X86_64_PC_WINDOWS_GNU_OPENSSL_STATIC=0
+    - env: X86_64_PC_WINDOWS_GNU_OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw
+    - env: X86_64_PC_WINDOWS_GNU_OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
+    - env: X86_64_PC_WINDOWS_GNU_OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
     # Bare metal
     # These targets don't support std and as such are likely not suitable for
     # most crates.
