@@ -13,6 +13,10 @@ env:
   global:
     # TODO Update this to match the name of your project.
     - CRATE_NAME=se_shell
+    - OPENSSL_STATIC=0
+    - OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw
+    - OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
+    - OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
 
 matrix:
   # TODO These are all the build jobs. Adjust as necessary. Comment out what you
@@ -93,6 +97,12 @@ install:
 
 
 script:
+  - ls -All /tmp
+  - ls -All /tmp/openssl-1.1.1-win64-mingw
+  - export OPENSSL_STATIC=0
+  - export OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw
+  - export OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
+  - export OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
   - bash ci/script.sh
 
 after_script: set +e
