@@ -1,5 +1,8 @@
 #![windows_subsystem = "windows"]
-#[macro_use] extern crate self_update;
+
+#[cfg(windows)] extern crate winapi;
+
+//#[macro_use] extern crate self_update;
 
 extern crate clap;
 extern crate rumqtt;
@@ -161,7 +164,15 @@ fn remove_file(filename: &str) {
 // 7) look if dx is installed, if not install it
 
 fn update() -> Result<(), Box<::std::error::Error>> {
-    let target = self_update::get_target()?;
+
+    // check if a update file exists... check checksum and copy if neccecary
+
+
+
+    Ok(())
+
+
+    /*let target = self_update::get_target()?;
     let status = self_update::backends::github::Update::configure()?
         .repo_owner("mcbernie")
         .repo_name("se_cleanup")
@@ -172,5 +183,28 @@ fn update() -> Result<(), Box<::std::error::Error>> {
         .build()?
         .update()?;
     println!("Update status: `{}`!", status.version());
-    Ok(())
+    Ok(())*/
+}
+
+
+#[cfg(windows)]
+fn get_version () {
+    use std::ffi::OsStr;
+    use std::iter::once;
+    use winapi::minwindef::LPDWORD;
+    use winapi::um::winver::{GetFileVersionInfoW, GetFileVersionInfoSizeW};
+
+    let own_path: &str = std::env::current_exe().display();
+
+    let wide: Vec<u16> = OsStr::new(own_path).encode_wide().chain(once(0)).collect();
+
+    let mut dw_handle:LPDWORD;
+
+    let ret_size = unsafe {
+        GetFileVersionInfoSizeW(wide.as_ptr(), dw_handle.as_ptr());
+    }
+
+    let ret = unsafe {
+        GetFileVersionInfoW(wide.as_ptr())
+    };
 }
