@@ -17,6 +17,13 @@ main() {
             ;;
     esac
 
+    echo "environment variables:"
+    echo $OPENSSL_STATIC
+    echo $X86_64_PC_WINDOWS_GNU_OPENSSL_DIR
+    echo $X86_64_PC_WINDOWS_GNU_OPENSSL_LIB_DIR
+    echo $X86_64_PC_WINDOWS_GNU_OPENSSL_INCLUDE_DIR
+    echo "=================== Thank you for flying with Deutsche Bahn ==="
+
     test -f Cargo.lock || cargo generate-lockfile
 
     # TODO Update this to build the artifacts that matter to you
