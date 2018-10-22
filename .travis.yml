@@ -89,6 +89,7 @@ matrix:
 
 before_install:
   - set -e
+  - apt-get install mingw-w64
   - rustup self update
 
 install:

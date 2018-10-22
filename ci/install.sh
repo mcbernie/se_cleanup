@@ -34,9 +34,9 @@ main() {
     esac
 
     # install mingw-w64
-    if [ $TARGET = x86_64-pc-windows-gnu ]; then
-        apt-get install mingw-w64
-    fi
+    #if [ $TARGET = x86_64-pc-windows-gnu ]; then
+    #    apt-get install mingw-w64
+    #fi
 
 
     # This fetches latest stable release
