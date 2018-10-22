@@ -14,31 +14,66 @@ environment:
   # don't need
   matrix:
     # MinGW
-    - TARGET: i686-pc-windows-gnu
     - TARGET: x86_64-pc-windows-gnu
-
+      BITS: 64
+      MSYS2: 1
+      OPENSSL_DIR: C:\OpenSSL
+    
     # MSVC
     - TARGET: i686-pc-windows-msvc
+      BITS: 32
+      OPENSSL_VERSION: 1_0_2p
+      OPENSSL_DIR: C:\OpenSSL
+
     - TARGET: x86_64-pc-windows-msvc
+      VCPKG_DEFAULT_TRIPLET: x64-windows
+      VCPKGRS_DYNAMIC: 1
+
 
     # Testing other channels
-    - TARGET: x86_64-pc-windows-gnu
-      RUST_VERSION: nightly
-    - TARGET: x86_64-pc-windows-msvc
-      RUST_VERSION: nightly
+    #- TARGET: x86_64-pc-windows-gnu
+    #  RUST_VERSION: nightly
+    #- TARGET: x86_64-pc-windows-msvc
+    #  RUST_VERSION: nightly
 
 install:
-  - ps: >-
-      If ($Env:TARGET -eq 'x86_64-pc-windows-gnu') {
-        $Env:PATH += ';C:\msys64\mingw64\bin'
-      } ElseIf ($Env:TARGET -eq 'i686-pc-windows-gnu') {
-        $Env:PATH += ';C:\msys64\mingw32\bin'
-      }
+  
+  # install OpenSSL
+  - mkdir C:\OpenSSL
+  - ps: if (Test-Path env:OPENSSL_VERSION) { Start-FileDownload "http://slproweb.com/download/Win${env:BITS}OpenSSL-${env:OPENSSL_VERSION}.exe" }
+  - if defined OPENSSL_VERSION Win%BITS%OpenSSL-%OPENSSL_VERSION%.exe /SILENT /VERYSILENT /SP- /DIR="C:\OpenSSL"
+  - appveyor DownloadFile https://curl.haxx.se/ca/cacert.pem -FileName C:\OpenSSL\cacert.pem
+
+  # install rust
+  #- ps: >-
+  #    If ($Env:TARGET -eq 'x86_64-pc-windows-gnu') {
+  #      $Env:PATH += ';C:\msys64\mingw64\bin'
+  #    } ElseIf ($Env:TARGET -eq 'i686-pc-windows-gnu') {
+  #      $Env:PATH += ';C:\msys64\mingw32\bin'
+  #    }
+  #- curl -sSf -o rustup-init.exe https://win.rustup.rs/
+  #- rustup-init.exe -y --default-host %TARGET% --default-toolchain %RUST_VERSION%
+  #- set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
+  #- if defined MSYS2 set PATH=C:\msys64\mingw%BITS%\bin;%PATH%
+  #- rustc -Vv
+  #- cargo -V
+  #- if defined VCPKG_DEFAULT_TRIPLET git clone https://github.com/Microsoft/vcpkg c:\projects\vcpkg
+  #- if defined VCPKG_DEFAULT_TRIPLET c:\projects\vcpkg\bootstrap-vcpkg.bat
+  #- if defined VCPKG_DEFAULT_TRIPLET set VCPKG_ROOT=c:\projects\vcpkg
+  #- if defined VCPKG_DEFAULT_TRIPLET echo yes > %VCPKG_ROOT%\Downloads\AlwaysAllowDownloads
+  #- if defined VCPKG_DEFAULT_TRIPLET %VCPKG_ROOT%\vcpkg.exe install openssl
   - curl -sSf -o rustup-init.exe https://win.rustup.rs/
-  - rustup-init.exe -y --default-host %TARGET% --default-toolchain %RUST_VERSION%
+  - rustup-init.exe -y --default-host %TARGET%
   - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
-  - rustc -Vv
+  - if defined MSYS2 set PATH=C:\msys64\mingw%BITS%\bin;%PATH%
+  - rustc -V
   - cargo -V
+  - if defined VCPKG_DEFAULT_TRIPLET git clone https://github.com/Microsoft/vcpkg c:\projects\vcpkg
+  - if defined VCPKG_DEFAULT_TRIPLET c:\projects\vcpkg\bootstrap-vcpkg.bat
+  - if defined VCPKG_DEFAULT_TRIPLET set VCPKG_ROOT=c:\projects\vcpkg
+  - if defined VCPKG_DEFAULT_TRIPLET echo yes > %VCPKG_ROOT%\Downloads\AlwaysAllowDownloads
+  - if defined VCPKG_DEFAULT_TRIPLET %VCPKG_ROOT%\vcpkg.exe install openssl
+
 
 # TODO This is the "test phase", tweak it as you see fit
 test_script:
@@ -64,7 +99,7 @@ deploy:
   # - Encrypt it. Go to https://ci.appveyor.com/tools/encrypt
   # - Paste the output down here
   auth_token:
-    secure: t3puM/2hOig26EHhAodcZBc61NywF7/PFEpimR6SwGaCiqS07KR5i7iAhSABmBp7
+    secure: qmFViwbc65+dIFfFfnuO/vmoUvnsKgl3P0J1MPycBftGwgIeRY35Fw6TsVIeP+ez
   description: ''
   on:
     # TODO Here you can pick which targets will generate binary releases
