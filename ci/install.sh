@@ -28,7 +28,16 @@ main() {
         x86_64-apple-ios)
             rustup target install x86_64-apple-ios
             ;;
+        x86_64-pc-windows-gnu)
+            rustup target add x86_64-pc-windows-gnu
+            ;;
     esac
+
+    # install mingw-w64
+    if [ $TARGET = x86_64-pc-windows-gnu ]; then
+        apt-get install mingw-w64
+    fi
+
 
     # This fetches latest stable release
     local tag=$(git ls-remote --tags --refs --exit-code https://github.com/japaric/cross \

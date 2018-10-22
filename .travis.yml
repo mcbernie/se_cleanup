@@ -90,7 +90,6 @@ matrix:
 before_install:
   - set -e
   - rustup self update
-  - rustup target add x86_64-pc-windows-gnu
 
 install:
   - sh ci/install.sh

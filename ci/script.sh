@@ -4,13 +4,9 @@ set -ex
 
 # TODO This is the "test phase", tweak it as you see fit
 main() {
-    export OPENSSL_STATIC=0
-    export OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw
-    export OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
-    export OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
 
-    env OPENSSL_STATIC=0 OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include cargo build --target $TARGET
-    env OPENSSL_STATIC=0 OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include cargo build --target $TARGET --release
+    cargo build --target $TARGET
+    cargo build --target $TARGET --release
 
     if [ ! -z $DISABLE_TESTS ]; then
         return
