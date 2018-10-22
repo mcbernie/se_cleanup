@@ -17,15 +17,17 @@ environment:
     - TARGET: x86_64-pc-windows-gnu
       BITS: 64
       MSYS2: 1
+      OPENSSL_VERSION: 1_1_0i
       OPENSSL_DIR: C:\OpenSSL
     
     # MSVC
     - TARGET: i686-pc-windows-msvc
       BITS: 32
-      OPENSSL_VERSION: 1_0_2p
+      OPENSSL_VERSION: 1_1_0i
       OPENSSL_DIR: C:\OpenSSL
 
     - TARGET: x86_64-pc-windows-msvc
+      OPENSSL_VERSION: 1_1_0i
       VCPKG_DEFAULT_TRIPLET: x64-windows
       VCPKGRS_DYNAMIC: 1
 
