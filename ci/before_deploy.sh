@@ -19,7 +19,6 @@ main() {
 
     test -f Cargo.lock || cargo generate-lockfile
 
-
     # TODO Update this to build the artifacts that matter to you
     cross rustc --target $TARGET --release -- -C lto
 
