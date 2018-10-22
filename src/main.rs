@@ -1,9 +1,5 @@
 #![windows_subsystem = "windows"]
 
-#[cfg(windows)] extern crate winapi;
-
-//#[macro_use] extern crate self_update;
-
 extern crate clap;
 extern crate rumqtt;
 extern crate mqtt3;
@@ -21,6 +17,7 @@ use std::time::Duration;
 
 mod mqtt;
 mod starter;
+mod getfileversion;
 
 //use winreg::RegKey;
 //use winreg::enums::*;
@@ -168,6 +165,7 @@ fn update() -> Result<(), Box<::std::error::Error>> {
     // check if a update file exists... check checksum and copy if neccecary
 
 
+    get_version();
 
     Ok(())
 
@@ -187,24 +185,6 @@ fn update() -> Result<(), Box<::std::error::Error>> {
 }
 
 
-#[cfg(windows)]
-fn get_version () {
-    use std::ffi::OsStr;
-    use std::iter::once;
-    use winapi::minwindef::LPDWORD;
-    use winapi::um::winver::{GetFileVersionInfoW, GetFileVersionInfoSizeW};
-
-    let own_path: &str = std::env::current_exe().display();
-
-    let wide: Vec<u16> = OsStr::new(own_path).encode_wide().chain(once(0)).collect();
-
-    let mut dw_handle:LPDWORD;
-
-    let ret_size = unsafe {
-        GetFileVersionInfoSizeW(wide.as_ptr(), dw_handle.as_ptr());
-    }
-
-    let ret = unsafe {
-        GetFileVersionInfoW(wide.as_ptr())
-    };
+fn get_version () -> (u16,u16,u16,u16) {
+    getfileversion::get_file_version(std::env::current_exe().unwrap())
 }
