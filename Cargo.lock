@@ -683,6 +683,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "openssl-src"
+version = "111.0.1+1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "cc 1.0.25 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "openssl-sys"
 version = "0.9.39"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1003,6 +1011,7 @@ version = "0.1.1"
 dependencies = [
  "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "mqtt3 0.1.4 (git+https://github.com/tekjar/mqtt3)",
+ "openssl-src 111.0.1+1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "rumqtt 0.20.0 (git+https://github.com/AtherEnergy/rumqtt?branch=tokio2)",
  "self_update 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -1629,6 +1638,7 @@ dependencies = [
 "checksum num_cpus 1.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "c51a3322e4bca9d212ad9a158a02abc6934d005490c054a2778df73a70aa0a30"
 "checksum openssl 0.10.14 (registry+https://github.com/rust-lang/crates.io-index)" = "6285ab297861546af7a2753593b3160bfc09f0ab9d1f5bb009e39d81a169b499"
 "checksum openssl 0.9.24 (registry+https://github.com/rust-lang/crates.io-index)" = "a3605c298474a3aa69de92d21139fb5e2a81688d308262359d85cdd0d12a7985"
+"checksum openssl-src 111.0.1+1.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "d1edaed888fd85a54a2646bf02992931ddefdda3b1a748fc79f088a8db27fcbe"
 "checksum openssl-sys 0.9.39 (registry+https://github.com/rust-lang/crates.io-index)" = "278c1ad40a89aa1e741a1eed089a2f60b18fab8089c3139b542140fc7d674106"
 "checksum owning_ref 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "cdf84f41639e037b484f93433aa3897863b561ed65c6e59c7073d7c561710f37"
 "checksum parking_lot 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)" = "d4d05f1349491390b1730afba60bb20d55761bef489a954546b58b4b34e1e2ac"

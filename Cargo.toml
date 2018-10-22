@@ -5,6 +5,7 @@ authors = ["Nicolas Brüggemann <nbrueggemann@itcoops.de>"]
 
 [dependencies]
 clap = "2.32.0"
+openssl-src = "*"
 rumqtt = { git = "https://github.com/AtherEnergy/rumqtt", branch = "tokio2"}
-mqtt3 = { git = "https://github.com/tekjar/mqtt3" }
+mqtt3 = { git = "https://github.com/tekjar/mqtt3"}
 self_update = "0.4"
