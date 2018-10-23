@@ -53,18 +53,18 @@ pub fn get_file_version(file: PathBuf) -> (u16,u16,u16,u16) {
 #[cfg(windows)]
 pub fn get_file_version(file: PathBuf) -> (u16,u16,u16,u16) {
     
-    use std::ffi::{OsStr,OsString};
+    use std::ffi::OsStr;
     use std::os::windows::ffi::OsStrExt;
-    use std::os::windows::ffi::OsStringExt;
+    //use std::os::windows::ffi::OsStringExt;
     use std::iter::once;
     use std::ptr::null_mut;
     use std::mem;
 
-    use self::winapi::*;
+    //use self::winapi::*;
     use self::winapi::um::winver::{GetFileVersionInfoW, GetFileVersionInfoSizeW, VerQueryValueW};
 
 
-    let wide: Vec<_> = OsStr::new(&file.display()).encode_wide().chain(once(0)).collect();
+    let wide: Vec<_> = OsStr::new(&file.display().to_string()).encode_wide().chain(once(0)).collect();
 
     let ret_size = unsafe {
         GetFileVersionInfoSizeW(wide.as_ptr(), null_mut())

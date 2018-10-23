@@ -13,10 +13,10 @@ env:
   global:
     # TODO Update this to match the name of your project.
     - CRATE_NAME=se_shell
-    #- OPENSSL_STATIC=0
-    - X86_64_PC_WINDOWS_GNU_OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw
-    #- X86_64_PC_WINDOWS_GNU_OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
-    #- X86_64_PC_WINDOWS_GNU_OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
+    - OPENSSL_STATIC=0
+    - OPENSSL_DIR=/tmp/openssl-1.1.1-win64-mingw
+    - OPENSSL_LIB_DIR=/tmp/openssl-1.1.1-win64-mingw/lib
+    - OPENSSL_INCLUDE_DIR=/tmp/openssl-1.1.1-win64-mingw/include
 
 matrix:
   # TODO These are all the build jobs. Adjust as necessary. Comment out what you
