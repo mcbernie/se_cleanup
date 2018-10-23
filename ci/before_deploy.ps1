@@ -19,7 +19,7 @@ $ZIP = "$SRC_DIR\$($Env:CRATE_NAME)-$($Env:APPVEYOR_REPO_TAG_NAME)-$($Env:TARGET
 $VERSION = $Env:APPVEYOR_REPO_TAG_NAME -replace '^v(\d+)\.(\d+)\.(\d+).*$','$1.$2.$3.0'
 
 # 
-Invoke-Expression '& "$($Env:Temp)\verpatch.exe" "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$VERSION" /va /s description "Star Entertainer Shell" /s company "zwei&40 GmbH" /s copyright "(c) 2018'
+Invoke-Expression '& "$($Env:Temp)\verpatch.exe" "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$VERSION" /va /s description "Star Entertainer Shell" /s company "zwei&40 GmbH" /s copyright "(c) 2018"'
 Invoke-Expression '& "$($Env:Temp)\verpatch.exe" "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" /pv "$VERSION"'
 
 # TODO Update this to package the right artifacts
