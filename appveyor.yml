@@ -76,7 +76,6 @@ install:
   - if defined VCPKG_DEFAULT_TRIPLET echo yes > %VCPKG_ROOT%\Downloads\AlwaysAllowDownloads
   - if defined VCPKG_DEFAULT_TRIPLET %VCPKG_ROOT%\vcpkg.exe install openssl
 
-
 # TODO This is the "test phase", tweak it as you see fit
 test_script:
   # we don't run the "test phase" when doing deploys

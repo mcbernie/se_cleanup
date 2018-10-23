@@ -15,7 +15,7 @@ use std::thread;
 use std::time::Duration;
 
 
-//mod updater;
+mod updater;
 mod mqtt;
 mod starter;
 mod getfileversion;
@@ -101,9 +101,10 @@ fn main() {
     // run endless loop....
     if run_shell || run_mqtt {
         loop {
-            if let Err(e) = update() {
+            updater::update();
+            /*if let Err(e) = update() {
                 println!("error on update... {:?}", e);
-            }
+            }*/
             thread::sleep(Duration::from_millis(5000));
         }
     }

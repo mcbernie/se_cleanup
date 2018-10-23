@@ -12,3 +12,4 @@ mqtt3 = { git = "https://github.com/tekjar/mqtt3"}
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["winver"] }
+#winreg = "0.5"
