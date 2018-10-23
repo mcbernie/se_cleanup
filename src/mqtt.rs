@@ -7,6 +7,8 @@ use std::path::{Path};
 use std::env;
 use getfileversion;
 
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
 pub fn run_mqtt(path_str: &'static str) {
     //let path = Path::new(path_str);
     let mymac = get_mac();
@@ -38,7 +40,7 @@ pub fn run_mqtt(path_str: &'static str) {
                             "ping" => {
                                 println!("get ping, send pong");
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "shellpong".to_owned());
-                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("Shell Version:{}", VERSION).to_owned());
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("Internal Version:{}", VERSION).to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("Product Version:v{:}.{:}.{:}.{:}", myversion.0, myversion.1, myversion.2, myversion.3).to_owned());
                             },
                             x if x.contains("shellvnc|") => {
