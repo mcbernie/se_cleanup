@@ -1,18 +1,16 @@
 use std::thread;
 use std::sync::{Arc, RwLock};
 use std::time::Duration;
-use rumqtt::MqttClient;
+use rumqtt::{MqttOptions, MqttClient, ReconnectOptions, SecurityOptions};
 use mqtt3::{Packet, QoS};
 use std::path::{Path};
 use std::env;
 use getfileversion;
 
-const VERSION: &'static str = env!("CARGO_PKG_VERSION");
-
 pub fn run_mqtt(path_str: &'static str) {
     //let path = Path::new(path_str);
     let mymac = get_mac();
-    let myversion = get_file_version(env::current_exe().unwrap());
+    let myversion = getfileversion::get_file_version(env::current_exe().unwrap());
     println!(" mac is: {}", &mymac);
 
 
