@@ -66,9 +66,7 @@ fn main() {
         } else {
             if cfg!(target_os = "windows") {
                 println!("check for updates");
-                if let Err(e) = update() {
-                    eprintln!("error on make update {:?}", e)
-                }
+               updater::update();
                 run_shell = true;
                 run_mqtt = true;
             }
@@ -161,32 +159,3 @@ fn remove_file(filename: &str) {
 // 5) determine hardware number
 // 6) install ocx or dll
 // 7) look if dx is installed, if not install it
-
-fn update() -> Result<(), Box<::std::error::Error>> {
-
-    // check if a update file exists... check checksum and copy if neccecary
-
-
-    get_version();
-
-    Ok(())
-
-
-    /*let target = self_update::get_target()?;
-    let status = self_update::backends::github::Update::configure()?
-        .repo_owner("mcbernie")
-        .repo_name("se_cleanup")
-        .target(&target)
-        .bin_name("se_shell")
-        .show_download_progress(true)
-        .current_version(cargo_crate_version!())
-        .build()?
-        .update()?;
-    println!("Update status: `{}`!", status.version());
-    Ok(())*/
-}
-
-
-fn get_version () -> (u16,u16,u16,u16) {
-    getfileversion::get_file_version(std::env::current_exe().unwrap())
-}

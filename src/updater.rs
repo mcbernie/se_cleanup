@@ -1,7 +1,7 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::env;
 use std::fs;
-
+use std::error::Error;
 
 pub fn update() {
     // lets begin!
@@ -15,7 +15,9 @@ pub fn update() {
         if is_other_file_is_newer(own_v, other_v) {
             // replace
             println!("found update, replace own file");
-            fs::copy(path.to_path_buf(), env::current_exe().unwrap());
+            if let Err(e) = fs::copy(path.to_path_buf(), env::current_exe().unwrap()) {
+                eprintln!("error on copy new file: {:?}", e.description());
+            };
         }
 
     
@@ -24,22 +26,22 @@ pub fn update() {
 }
 
 fn is_other_file_is_newer( f1:(u16,u16,u16,u16), f2:(u16,u16,u16,u16)) -> bool {
-    if f1.0 > f2.0 {
+    if f2.0 > f1.0 {
         return true;
     }
 
     if f1.0 == f2.0 {
-        if f1.1 > f2.1 {
+        if f2.1 > f1.1 {
             return true;
         }
 
         if f1.1 == f2.1 {
-            if f1.2 > f2.2 {
+            if f2.2 > f1.2 {
                 return true;
             }
 
             if f1.2 == f2.2 {
-                if f1.3 > f2.3 {
+                if f2.3 > f1.3 {
                     return true;
                 }
             }
