@@ -114,7 +114,6 @@ deploy:
 cache:
   - C:\Users\appveyor\.cargo\registry
   - target
-
 branches:
   only:
     # Release tags

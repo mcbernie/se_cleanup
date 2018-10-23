@@ -66,7 +66,7 @@ fn main() {
         } else {
             if cfg!(target_os = "windows") {
                 println!("check for updates");
-               updater::update();
+                updater::update();
                 run_shell = true;
                 run_mqtt = true;
             }

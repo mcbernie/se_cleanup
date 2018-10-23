@@ -4,11 +4,11 @@
 $SRC_DIR = $PWD.Path
 $STAGE = [System.Guid]::NewGuid().ToString()
 
-Set-Location $ENV:Temp
+Set-Location $Env:Temp
 
 # install Versions tool
 Invoke-WebRequest "https://downloads.vigem.org/other/pavel-a/ddverpatch/verpatch-1.0.15.1-x86-codeplex.zip" -OutFile verpatch-1.0.15.1-x86-codeplex.zip
-Expand-Archive verpatch-1.0.15.1-x86-codeplex.zip -DestinationPath $ENV:Temp
+Expand-Archive verpatch-1.0.15.1-x86-codeplex.zip -DestinationPath $Env:Temp
 
 # set stage folder
 New-Item -Type Directory -Name $STAGE
@@ -16,9 +16,11 @@ Set-Location $STAGE
 
 $ZIP = "$SRC_DIR\$($Env:CRATE_NAME)-$($Env:APPVEYOR_REPO_TAG_NAME)-$($Env:TARGET).zip"
 
+$VERSION = $Env:APPVEYOR_REPO_TAG_NAME -replace '^v(\d+)\.(\d+)\.(\d+).*$','$1.$2.$3.0'
+
 # 
-$($ENV:Temp)\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$env:APPVEYOR_BUILD_VERSION"
-$($ENV:Temp)\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" /pv "$env:APPVEYOR_BUILD_VERSION"
+$($Env:Temp)\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$VERSION"
+$($Env:Temp)\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" /pv "$VERSION"
 
 
 # TODO Update this to package the right artifacts
