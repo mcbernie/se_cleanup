@@ -1,4 +1,4 @@
-#![windows_subsystem = "windows"]
+//#![windows_subsystem = "windows"]
 
 extern crate clap;
 extern crate rumqtt;
@@ -19,6 +19,7 @@ mod updater;
 mod mqtt;
 mod starter;
 mod getfileversion;
+mod winregistry;
 
 //use winreg::RegKey;
 //use winreg::enums::*;

@@ -1,6 +1,6 @@
 #[cfg(windows)] extern crate winreg;
 
-pub struct se_registry {
+/*pub struct se_registry {
     path: &str,
     /*version: &str,
     revision: &str,
@@ -26,4 +26,28 @@ pub fn get_se_settings() -> Result<se_registry, &str> {
     se_registry {
         path: &se_path,
     }
+}*/
+
+pub fn create_run_once_command(name: &str, command: &str) {
+
+    let result_of_command = format!("cmd /C \"{:}\"", command);
+
+    set_registry_for_run_once_command(name.to_string(), result_of_command);
+
+}
+
+#[allow(unused_variables)]
+#[cfg(not(windows))]
+fn set_registry_for_run_once_command(name: String,command: String) {
+
+}
+
+#[cfg(windows)]
+fn set_registry_for_run_once_command(name: String, command: String) {
+    use self::winreg::RegKey;
+    use self::winreg::enums::*;
+
+    let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
+    let run_once = hklm.open_subkey("Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce").unwrap();
+    run_once.set_value(name, &command).unwrap();
 }

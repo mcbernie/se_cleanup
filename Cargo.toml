@@ -1,6 +1,6 @@
 [package]
 name = "se_shell"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Nicolas Brüggemann <nbrueggemann@itcoops.de>"]
 
 [dependencies]
@@ -12,4 +12,4 @@ mqtt3 = { git = "https://github.com/tekjar/mqtt3"}
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["winver"] }
-#winreg = "0.5"
+winreg = "0.5"

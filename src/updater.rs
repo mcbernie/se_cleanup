@@ -1,7 +1,9 @@
 use std::path::Path;
 use std::env;
-use std::fs;
-use std::error::Error;
+//use std::fs;
+//use std::error::Error;
+use std::process;
+use winregistry;
 
 pub fn update() {
     // lets begin!
@@ -9,15 +11,20 @@ pub fn update() {
 
     if let Ok(path) = exists_a_update() {
         // look if version is new
-        let own_v = get_file_version(env::current_exe().unwrap());
+        let own_path = env::current_exe().unwrap();
+
+        let own_v = get_file_version(own_path.clone());
         let other_v = get_file_version(path.to_path_buf());
 
         if is_other_file_is_newer(own_v, other_v) {
             // replace
             println!("found update, replace own file");
-            if let Err(e) = fs::copy(path.to_path_buf(), env::current_exe().unwrap()) {
+            winregistry::create_run_once_command("updateShell", &format!("cmd /Y {:} {:}", path.display(), own_path.display()));
+            process::exit(0);
+            // create runonce command to rpelace own shell
+            /*if let Err(e) = fs::copy(path.to_path_buf(), env::current_exe().unwrap()) {
                 eprintln!("error on copy new file: {:?}", e.description());
-            };
+            };*/
         }
 
     
