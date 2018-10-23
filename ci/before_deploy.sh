@@ -31,7 +31,7 @@ main() {
     cargo build --target $TARGET --release
 
     # TODO Update this to package the right artifacts
-    cp target/$TARGET/release/se_shell $stage/
+    #cp target/$TARGET/release/se_cleanup $stage/se_shell
     cp target/$TARGET/release/se_shell.exe $stage/
 
     cd $stage

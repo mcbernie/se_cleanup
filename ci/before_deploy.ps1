@@ -19,9 +19,8 @@ $ZIP = "$SRC_DIR\$($Env:CRATE_NAME)-$($Env:APPVEYOR_REPO_TAG_NAME)-$($Env:TARGET
 $VERSION = $Env:APPVEYOR_REPO_TAG_NAME -replace '^v(\d+)\.(\d+)\.(\d+).*$','$1.$2.$3.0'
 
 # 
-$($Env:Temp)\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$VERSION"
-$($Env:Temp)\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" /pv "$VERSION"
-
+Invoke-Expression '& "$($Env:Temp)\verpatch.exe" "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$VERSION"'
+Invoke-Expression '& "$($Env:Temp)\verpatch.exe" "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" /pv "$VERSION"'
 
 # TODO Update this to package the right artifacts
 Copy-Item "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" '.\'
