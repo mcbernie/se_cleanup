@@ -5,3 +5,4 @@
 
 ## Compiles for the following os's
 - win64 
+- use appveyor
