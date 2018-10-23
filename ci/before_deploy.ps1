@@ -10,6 +10,14 @@ Set-Location $STAGE
 
 $ZIP = "$SRC_DIR\$($Env:CRATE_NAME)-$($Env:APPVEYOR_REPO_TAG_NAME)-$($Env:TARGET).zip"
 
+# Set Versions
+Invoke-WebRequest "https://downloads.vigem.org/other/pavel-a/ddverpatch/verpatch-1.0.15.1-x86-codeplex.zip" -OutFile verpatch-1.0.15.1-x86-codeplex.zip
+Expand-Archive verpatch-1.0.15.1-x86-codeplex.zip -DestinationPath $ENV:Temp
+
+$ENV:Temp\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" "$env:APPVEYOR_BUILD_VERSION"
+$ENV:Temp\verpatch.exe "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" /pv "$env:APPVEYOR_BUILD_VERSION"
+
+
 # TODO Update this to package the right artifacts
 Copy-Item "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" '.\'
 
