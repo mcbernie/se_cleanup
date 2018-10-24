@@ -1,28 +1,20 @@
-//#![windows_subsystem = "windows"]
+#![windows_subsystem = "windows"]
 
 extern crate clap;
 extern crate rumqtt;
 extern crate mqtt3;
 
-//extern crate winreg;
-
 use clap::{Arg, App};
-
 use std::path::{Path, PathBuf};
 use std::fs;
-
 use std::thread;
 use std::time::Duration;
-
 
 mod updater;
 mod mqtt;
 mod starter;
 mod getfileversion;
 mod winregistry;
-
-//use winreg::RegKey;
-//use winreg::enums::*;
 
 fn main() {
     let matches = App::new("se_prepper")
@@ -101,9 +93,6 @@ fn main() {
     if run_shell || run_mqtt {
         loop {
             updater::update();
-            /*if let Err(e) = update() {
-                println!("error on update... {:?}", e);
-            }*/
             thread::sleep(Duration::from_millis(5000));
         }
     }

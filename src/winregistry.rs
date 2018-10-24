@@ -46,8 +46,18 @@ fn set_registry_for_run_once_command(name: String,command: String) {
 fn set_registry_for_run_once_command(name: String, command: String) {
     use self::winreg::RegKey;
     use self::winreg::enums::*;
+    use std::io;
 
     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    let run_once = hklm.open_subkey("Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce").unwrap();
-    run_once.set_value(name, &command).unwrap();
+
+    //create_subkey will  create alls keys or simple open a key if already exists! important: gives writa access.
+    let run_once = hklm.create_subkey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce").unwrap();/*_or_else( |e| match e.kind() {
+        io::ErrorKind::NotFound => println!("key does not exists: {:?}", e),
+        io::ErrorKind::PermissionDenied => println!("Access Denied: {:?}", e),
+        _ => println!("{:?}", e)
+    });*/
+
+    run_once.set_value(name, &command).unwrap_or_else( |e| match e.kind() {
+        _ => println!("error on set value... {:} :{:?}",&command, e)
+    });
 }

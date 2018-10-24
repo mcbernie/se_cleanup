@@ -21,10 +21,6 @@ pub fn update() {
             println!("found update, replace own file");
             winregistry::create_run_once_command("updateShell", &format!("copy /Y {:} {:}", path.display(), own_path.display()));
             process::exit(0);
-            // create runonce command to rpelace own shell
-            /*if let Err(e) = fs::copy(path.to_path_buf(), env::current_exe().unwrap()) {
-                eprintln!("error on copy new file: {:?}", e.description());
-            };*/
         }
 
     
