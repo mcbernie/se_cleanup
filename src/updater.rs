@@ -70,7 +70,7 @@ fn check_if_is_one_greater_than_file_two() {
 }
 
 fn exists_a_update() -> Result<&'static Path, &'static str> {
-    let se_update_path = Path::new("c:/jackpot/temp/se_shell.exe");
+    let se_update_path = Path::new("c:\\jackpot\\temp\\se_shell.exe");
 
     if se_update_path.exists() {
         return Ok(se_update_path);
