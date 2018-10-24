@@ -103,7 +103,6 @@ deploy:
       RUST_VERSION: stable
       appveyor_repo_tag: true  
 
-deploy:
   - provider: FTP
     artifact: se_shell.exe
     protocol: ftp
