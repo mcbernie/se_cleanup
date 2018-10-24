@@ -3,6 +3,7 @@
 extern crate clap;
 extern crate rumqtt;
 extern crate mqtt3;
+extern crate rand;
 
 use clap::{Arg, App};
 use std::path::{Path, PathBuf};
@@ -64,6 +65,13 @@ fn main() {
                 run_mqtt = true;
             }
         }
+    } else {
+        /*if matches.is_present("shell") {
+                run_shell = true;
+        }*/
+        if matches.is_present("mqtt") {
+            run_mqtt = true;
+        }            
     }
 
     if matches.is_present("prepare") {

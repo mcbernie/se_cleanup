@@ -7,7 +7,12 @@ use std::path::{Path};
 use std::env;
 use getfileversion;
 
+use rand;
+use rand::Rng;
+use rand::distributions::Alphanumeric;
+
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
 
 pub fn run_mqtt(path_str: &'static str) {
     //let path = Path::new(path_str);
@@ -15,10 +20,14 @@ pub fn run_mqtt(path_str: &'static str) {
     let myversion = getfileversion::get_file_version(env::current_exe().unwrap());
     println!(" mac is: {}", &mymac);
 
+    let clientname: String = rand::thread_rng().sample_iter(&Alphanumeric).take(7).collect();
+    let commited_clientname = format!("{:}-{:}", mymac, clientname);
+    println!("clientname is: {:}", commited_clientname);
 
-    let client_options = MqttOptions::new("rumqtt-demo10", "big-cash.de:1883").unwrap()
-            .set_keep_alive(10)
-            .set_reconnect_opts(ReconnectOptions::AfterFirstSuccess(10))
+    let client_options = MqttOptions::new(commited_clientname, "big-cash.de:1883").unwrap()
+            .set_keep_alive(60)
+            .set_reconnect_opts(ReconnectOptions::Always(3))
+            .set_clean_session(false)
             .set_security_opts(SecurityOptions::UsernamePassword(("setest".to_string(), "testse".to_string())));
 
     let (mut tx, rx) = MqttClient::start(client_options);
@@ -120,13 +129,15 @@ fn open_vnc(path_str: &str, port: &str) {
 
 fn get_mac() -> String {
  
-    let mut mac : String = "000000000000".to_string();
+    let mut mac : String = "80EE73DE201A".to_string();
+    //let mut mac : String = "000000000000".to_string();
     
     match get_mac_address() {
         Ok(Some(ma)) => {
             if ma.len() > 1 {
                 println!("little mac warning.. got more than 1 mac..");
             }
+            println!("hmm: {:?}", ma);
             mac = ma[0].to_string();
         }
         Ok(None) => println!("no mac found"),
@@ -169,6 +180,10 @@ fn get_mac_address() ->  Result<Option<Vec<String>>, &'static str> {
             let the_mac = mac_content.replace("\"", "").replace("-", "");
             macs.push(the_mac);
         }
+    }
+    
+    if macs.len() < 1 {
+        return Err("No Macs found");
     }
 
     Ok(Some(macs))
