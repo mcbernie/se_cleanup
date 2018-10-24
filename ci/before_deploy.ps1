@@ -24,11 +24,10 @@ Invoke-Expression '& "$($Env:Temp)\verpatch.exe" "$SRC_DIR\target\$($Env:TARGET)
 
 # TODO Update this to package the right artifacts
 Copy-Item "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe" '.\'
-
 7z a "$ZIP" *
 
 Push-AppveyorArtifact "$ZIP"
-Push-AppveyorArtifact "se_shell.exe"
+Push-AppveyorArtifact "$SRC_DIR\target\$($Env:TARGET)\release\se_shell.exe"
 
 Remove-Item *.* -Force
 Set-Location ..
