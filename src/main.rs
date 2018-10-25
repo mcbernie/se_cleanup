@@ -5,6 +5,14 @@ extern crate rumqtt;
 extern crate mqtt3;
 extern crate rand;
 
+extern crate flexi_logger;
+
+#[macro_use]
+extern crate log;
+
+use flexi_logger::{detailed_format, Logger};
+
+
 use clap::{Arg, App};
 use std::path::{Path, PathBuf};
 use std::fs;
@@ -17,7 +25,36 @@ mod starter;
 mod getfileversion;
 mod winregistry;
 
+fn setup_logging() {
+
+    let mut logging_path = "Logs";
+
+    let se_path = Path::new("c:\\Jackpot");
+    if se_path.exists() {
+        logging_path = "C:\\Jackpot\\Logs"
+    }
+
+
+    //Logger::with_env()
+    let logger = Logger::with_str("info")
+        .format(detailed_format)
+        .print_message()
+        .log_to_file()
+        .directory(logging_path)
+        .rotate_over_size(2000)
+        .o_timestamp(true)
+        .start_reconfigurable();
+
+    if let Err(e) = logger {
+        eprintln!("Logger initialization failed with {}", e)
+    }
+
+}
+
 fn main() {
+
+    setup_logging();
+
     let matches = App::new("se_prepper")
         .version("1.0")
         .about("prepare a star entertainer image")
@@ -59,7 +96,7 @@ fn main() {
             }            
         } else {
             if cfg!(target_os = "windows") {
-                println!("check for updates");
+                info!("check for updates");
                 updater::update();
                 run_shell = true;
                 run_mqtt = true;
@@ -87,13 +124,13 @@ fn main() {
 
     // RUN AS SHELL
     if run_shell {
-        println!("start shell");
+        info!("start shell");
         starter::run_starter(se_path.clone().to_str().unwrap());
     }
 
     // MQTT Connection
     if run_mqtt {
-        println!("start mqtt client connection");
+        info!("start mqtt client connection");
         mqtt::run_mqtt(se_path.clone().to_str().unwrap());
     }
 
@@ -124,8 +161,8 @@ fn remove_file(filename: &str) {
     let ext_filename = path.file_name().unwrap().to_str().unwrap_or("?");
 
     match fs::remove_file(path.to_str().unwrap()) {
-        Err(why) => println!("! error on remove {:} {:?}", ext_filename, why.kind()),
-        Ok(_) => println!("removed {:}", ext_filename),
+        Err(why) => error!("! error on remove {:} {:?}", ext_filename, why.kind()),
+        Ok(_) => info!("removed {:}", ext_filename),
     }
 
 }

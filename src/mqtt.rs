@@ -18,11 +18,11 @@ pub fn run_mqtt(path_str: &'static str) {
     //let path = Path::new(path_str);
     let mymac = get_mac();
     let myversion = getfileversion::get_file_version(env::current_exe().unwrap());
-    println!(" mac is: {}", &mymac);
+    info!(" mac is: {}", &mymac);
 
     let clientname: String = rand::thread_rng().sample_iter(&Alphanumeric).take(7).collect();
     let commited_clientname = format!("{:}-{:}", mymac, clientname);
-    println!("clientname is: {:}", commited_clientname);
+    info!("clientname is: {:}", commited_clientname);
 
     let client_options = MqttOptions::new(commited_clientname, "big-cash.de:1883").unwrap()
             .set_keep_alive(60)
@@ -34,7 +34,9 @@ pub fn run_mqtt(path_str: &'static str) {
     let topic = String::from(format!("SE/{}", &mymac));
     let sender_topic = String::from(format!("SESERVER/SE/{}", &mymac));
 
-    tx.subscribe(vec![(topic.clone(), QoS::AtLeastOnce)]).expect("Error subscribing");
+    if let Err(e) = tx.subscribe(vec![(topic.clone(), QoS::AtLeastOnce)]) {
+        error!("cant subscribe to channel {:}! {:?}", topic, e);
+    }
 
     let _t = thread::spawn(move || {
         
@@ -47,17 +49,18 @@ pub fn run_mqtt(path_str: &'static str) {
                     if let Ok(string) = String::from_utf8(body.clone()) {
                         match string.as_ref() {
                             "ping" => {
-                                println!("get ping, send pong");
+                                info!("get ping, send pong");
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "shellpong".to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Internal Version:{}", VERSION).to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Product Version:{:}.{:}.{:}.{:}", myversion.0, myversion.1, myversion.2, myversion.3).to_owned());
                             },
                             x if x.contains("shellvnc|") => {
-                                println!("get vnc, open vnc");
+                                info!("get vnc, open vnc");
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), "SE_Shell: VNC Request".to_owned());
                                 open_vnc(path_str, x.to_string().split("|").collect::<Vec<_>>().last().unwrap());
                             },
                             _ => {
-                                println!("{}? kenn ich nicht!", string);
+                                debug!("{}? kenn ich nicht!", string);
                             },
                         };
 
@@ -89,7 +92,7 @@ fn open_vnc(path_str: &str, port: &str) {
     use std::fs::OpenOptions;
     use std::fs::copy;
 
-    println!("open_vnc to port: {}", port);
+    info!("open_vnc to port: {}", port);
     // Files and path
     let path = Path::new(path_str);
     let template_path = path.join("helpdesk.vorlage.txt");
@@ -102,7 +105,7 @@ fn open_vnc(path_str: &str, port: &str) {
     // copy template..
     // from c#: File.Copy("c:\\Jackpot\\helpdesk.vorlage.txt", "c:\\Jackpot\\Helpdesk.txt", true);
     if let Err(e) = copy(&template_path, &helpdesk_path) {
-        eprintln!("Could not copy template {} to helpdesk file {}: {}", template_path.display(), helpdesk_path.display(), e.description());
+        error!("Could not copy template {} to helpdesk file {}: {}", template_path.display(), helpdesk_path.display(), e.description());
         return;
     }
 
@@ -114,7 +117,7 @@ fn open_vnc(path_str: &str, port: &str) {
 
 
     if let Err(e) = file.write(file_contents.as_bytes()) {
-        eprintln!("Could not write to helpdesk file {}: {}", helpdesk_path.display(), e.description());
+        error!("Could not write to helpdesk file {}: {}", helpdesk_path.display(), e.description());
         return;
     }
 
@@ -122,7 +125,7 @@ fn open_vnc(path_str: &str, port: &str) {
     use std::process::Command;
     let remote_command_display = remote_command.display();
     if let Err(r) = Command::new(&remote_command).spawn() {
-        eprintln!("Error on start remotehelp {}: {}", remote_command_display, r.description());
+        error!("Error on start remotehelp {}: {}", remote_command_display, r.description());
     }
 }
 
@@ -135,13 +138,13 @@ fn get_mac() -> String {
     match get_mac_address() {
         Ok(Some(ma)) => {
             if ma.len() > 1 {
-                println!("little mac warning.. got more than 1 mac..");
+                debug!("little mac warning.. got more than 1 mac..");
             }
-            println!("hmm: {:?}", ma);
+            debug!("hmm: {:?}", ma);
             mac = ma[0].to_string();
         }
-        Ok(None) => println!("no mac found"),
-        Err(e) => println!("{:?}", e),
+        Ok(None) => debug!("no mac found"),
+        Err(e) => error!("{:?}", e),
     }
 
     mac.to_uppercase()

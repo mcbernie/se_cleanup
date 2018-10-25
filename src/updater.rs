@@ -18,7 +18,7 @@ pub fn update() {
 
         if is_other_file_is_newer(own_v, other_v) {
             // replace
-            println!("found update, replace own file");
+            info!("found update, replace own file");
             winregistry::create_run_once_command("updateShell", &format!("copy /Y {:} {:}", path.display(), own_path.display()));
             process::exit(0);
         }
