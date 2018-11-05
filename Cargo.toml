@@ -1,6 +1,6 @@
 [package]
 name = "se_shell"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Nicolas Brüggemann <nbrueggemann@itcoops.de>"]
 
 [dependencies]

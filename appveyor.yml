@@ -112,7 +112,7 @@ deploy:
       secure: sx8WGfnlWwTqm/yHM5EY1Q==
     password:
       secure: Uppevg5zPz8UmToK5gIJMA==
-    folder: /Delmenhorst/SE2010
+    folder: /SE2010
     on:
       RUST_VERSION: stable
       appveyor_repo_tag: true  

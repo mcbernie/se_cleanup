@@ -41,7 +41,7 @@ fn setup_logging() {
         .print_message()
         .log_to_file()
         .directory(logging_path)
-        .rotate_over_size(2000)
+        .rotate_over_size(20000)
         .o_timestamp(true)
         .start_reconfigurable();
 

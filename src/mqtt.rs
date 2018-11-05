@@ -53,6 +53,7 @@ pub fn run_mqtt(path_str: &'static str) {
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "shellpong".to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Internal Version:{}", VERSION).to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Product Version:{:}.{:}.{:}.{:}", myversion.0, myversion.1, myversion.2, myversion.3).to_owned());
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: UWF Status:{:}", 0).to_owned());
                             },
                             x if x.contains("shellvnc|") => {
                                 info!("get vnc, open vnc");
