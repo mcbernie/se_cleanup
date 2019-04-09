@@ -1,7 +1,7 @@
 
 
 
-pub fn IsPasswordExpires() -> Result<String, String> {
+pub fn password_expires() -> Result<String, String> {
     use std::process::Command;
     let output = Command::new("wmic")
         .args(&["useraccount", "where", "\"Name='nico'\"", "GET", "PasswordExpires"])
@@ -22,7 +22,7 @@ pub fn IsPasswordExpires() -> Result<String, String> {
 
 }
 
-pub fn SetPasswordNeverExpires() -> Result<_, String> {
+pub fn set_password_expires_to_false() -> Result<_, String> {
 
     use std::process::Command;
     let output = Command::new("wmic")

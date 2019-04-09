@@ -24,6 +24,7 @@ mod mqtt;
 mod starter;
 mod getfileversion;
 mod winregistry;
+mod infos;
 
 fn setup_logging() {
 
@@ -87,8 +88,8 @@ fn main() {
         .get_matches();
 
     if matches.is_present("testwmic") {
-        IsPasswordExpires();
-        SetPasswordNeverExpires();
+        password_expires();
+        set_password_expires_to_false();
         panic!("BLA");
     }
 
