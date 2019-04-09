@@ -17,7 +17,7 @@ environment:
     - TARGET: x86_64-pc-windows-gnu
       BITS: 64
       MSYS2: 1
-      OPENSSL_VERSION: 1_1_0i
+      OPENSSL_VERSION: 1_1_0j
       OPENSSL_DIR: C:\OpenSSL
     
     # MSVC
