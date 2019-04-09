@@ -78,8 +78,20 @@ fn main() {
             .short("n")
             .long("no")
             .help("Dont run with default behavior")
-            .takes_value(false))                        
+            .takes_value(false))
+        .arg(Arg::wit_name("testwmic")
+            .short("w")
+            .long("wmic")
+            .help("Test WMIC Settings")
+            .takes_value(false))                      
         .get_matches();
+
+    if matches.is_present("testwmic") {
+        IsPasswordExpires();
+        SetPasswordNeverExpires();
+        panic!("BLA");
+    }
+
 
     let se_path = Path::new("c:/jackpot");
 

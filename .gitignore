@@ -1,2 +1,4 @@
 /target
 **/*.rs.bk
+*.icloud
+.DS_Store
