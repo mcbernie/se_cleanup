@@ -2,7 +2,6 @@
 
 extern crate clap;
 extern crate rumqtt;
-extern crate mqtt3;
 extern crate rand;
 
 extern crate flexi_logger;

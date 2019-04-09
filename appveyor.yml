@@ -98,9 +98,10 @@ deploy:
     artifact: /.*\.zip/
     auth_token:
       secure: qmFViwbc65+dIFfFfnuO/vmoUvnsKgl3P0J1MPycBftGwgIeRY35Fw6TsVIeP+ez
-    description: ''
+    description: 'from master for testing'
     on:
       RUST_VERSION: stable
+      appveyor_repo_tag: false  
 
   - provider: FTP
     artifact: se_shell.exe

@@ -1,8 +1,7 @@
 use std::thread;
 use std::sync::{Arc, RwLock};
 use std::time::Duration;
-use rumqtt::{MqttOptions, MqttClient, ReconnectOptions, SecurityOptions};
-use mqtt3::{Packet, QoS};
+use rumqtt::{MqttOptions, MqttClient, ReconnectOptions, SecurityOptions, QoS};
 use std::path::{Path};
 use std::env;
 use getfileversion;
@@ -24,17 +23,17 @@ pub fn run_mqtt(path_str: &'static str) {
     let commited_clientname = format!("{:}-{:}", mymac, clientname);
     info!("clientname is: {:}", commited_clientname);
 
-    let client_options = MqttOptions::new(commited_clientname, "big-cash.de:1883").unwrap()
+    let client_options = MqttOptions::new(commited_clientname, "big-cash.de", 1883)
             .set_keep_alive(60)
             .set_reconnect_opts(ReconnectOptions::Always(3))
             .set_clean_session(false)
-            .set_security_opts(SecurityOptions::UsernamePassword(("setest".to_string(), "testse".to_string())));
+            .set_security_opts(SecurityOptions::UsernamePassword("setest".to_string(), "testse".to_string()));
 
-    let (mut tx, rx) = MqttClient::start(client_options);
+    let (mut tx, rx) = MqttClient::start(client_options).unwrap();
     let topic = String::from(format!("SE/{}", &mymac));
     let sender_topic = String::from(format!("SESERVER/SE/{}", &mymac));
 
-    if let Err(e) = tx.subscribe(vec![(topic.clone(), QoS::AtLeastOnce)]) {
+    if let Err(e) = tx.subscribe(topic.clone(), QoS::AtLeastOnce) {
         error!("cant subscribe to channel {:}! {:?}", topic, e);
     }
 
@@ -44,7 +43,7 @@ pub fn run_mqtt(path_str: &'static str) {
 
         for m in rx {
             match m {
-                (Packet::Publish(p), _) => {
+                rumqtt::Notification::Publish(p) => {
                     let body = p.payload.as_ref();
                     if let Ok(string) = String::from_utf8(body.clone()) {
                         match string.as_ref() {
@@ -82,7 +81,7 @@ fn send_reply(tx: Arc<RwLock<MqttClient>>, topic: String, reply: String) {
     thread::spawn(move || {
         thread::sleep(Duration::from_millis(10));
         let mut client = tx.write().expect("Error acquiring a write lock to the MQTT Client");
-        client.publish(topic, QoS::AtLeastOnce, reply.as_bytes().to_vec()).expect("Error publishing answer");
+        client.publish(topic, QoS::AtLeastOnce, false, reply.as_bytes().to_vec()).expect("Error publishing answer");
     });
 }
 

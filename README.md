@@ -17,3 +17,10 @@
     git push origin v0.0.0 -f 
     ```
 ## Ready
+
+
+## To compile windows on macos:
+- install mingw-w64:
+    ```bash
+    brew install mingw-w64
+    ```
