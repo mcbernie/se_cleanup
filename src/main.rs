@@ -55,9 +55,9 @@ fn main() {
 
     setup_logging();
 
-    let matches = App::new("se_prepper")
-        .version("1.0")
-        .about("prepare a star entertainer image")
+    let matches = App::new("se_shell")
+        .version("git")
+        .about("Shell for Prestarting SE on Win10 Enterprise systems")
         .author("Nicolas Brueggemann")
         .arg(Arg::with_name("prepare")
             .short("p")
@@ -86,13 +86,9 @@ fn main() {
             .takes_value(false))                      
         .get_matches();
 
-    println!("TEST AND SO ON..");
     if matches.is_present("testwmic") {
-        println!("WOOOW");
-        infos::password_expires();
-        infos::set_password_expires_to_false();
-        println!("FINISHED");
-        panic!("BLA");
+        let status = infos::password_expires().unwrap();
+        info!("Password Expires?: {:?}", status);
     }
 
 

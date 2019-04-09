@@ -4,7 +4,7 @@
 pub fn password_expires() -> Result<String, &'static str> {
     use std::process::Command;
     let output = Command::new("wmic")
-        .args(&["useraccount", "where", "\"Name='nico'\"", "GET", "PasswordExpires"])
+        .args(&["useraccount", "where", "\"Name='se_user'\"", "GET", "PasswordExpires"])
         .output()
         .expect("failed to execute wmic useraccount");
 
@@ -14,19 +14,14 @@ pub fn password_expires() -> Result<String, &'static str> {
     if lines.len() < 2 {
         return Err("Not enough lines");
     }
-
     let value = lines[1];
-    println!("VALUE:[{:?}]", value);
-
     Ok(value.to_string())
-
 }
 
 pub fn set_password_expires_to_false() -> Result<(), &'static str> {
-
     use std::process::Command;
     let output = Command::new("wmic")
-        .args(&["useraccount", "where", "\"Name='nico'\"", "SET", "PasswordExpires=false"])
+        .args(&["useraccount", "where", "\"Name='se_user'\"", "SET", "PasswordExpires=false"])
         .output()
         .expect("failed to execute wmic useraccount to set passwordexpires");
 
@@ -38,10 +33,8 @@ pub fn set_password_expires_to_false() -> Result<(), &'static str> {
     }
 
     let value = lines[1];
-    println!("VALUE:[{:?}]", value);
 
     Ok(())
-
 }
 
 
