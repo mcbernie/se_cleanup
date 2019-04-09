@@ -79,7 +79,7 @@ fn main() {
             .long("no")
             .help("Dont run with default behavior")
             .takes_value(false))
-        .arg(Arg::wit_name("testwmic")
+        .arg(Arg::with_name("testwmic")
             .short("w")
             .long("wmic")
             .help("Test WMIC Settings")
