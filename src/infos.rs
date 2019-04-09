@@ -22,7 +22,7 @@ pub fn password_expires() -> Result<String, String> {
 
 }
 
-pub fn set_password_expires_to_false() -> Result<_, String> {
+pub fn set_password_expires_to_false() -> Result<(), String> {
 
     use std::process::Command;
     let output = Command::new("wmic")
@@ -40,7 +40,7 @@ pub fn set_password_expires_to_false() -> Result<_, String> {
     let value = lines[1];
     println!("VALUE:[{:?}]", value);
 
-    Ok()
+    Ok(())
 
 }
 

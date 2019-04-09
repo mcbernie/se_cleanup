@@ -88,8 +88,8 @@ fn main() {
         .get_matches();
 
     if matches.is_present("testwmic") {
-        password_expires();
-        set_password_expires_to_false();
+        infos::password_expires();
+        infos::set_password_expires_to_false();
         panic!("BLA");
     }
 

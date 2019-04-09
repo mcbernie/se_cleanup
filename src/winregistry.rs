@@ -46,7 +46,6 @@ fn set_registry_for_run_once_command(name: String,command: String) {
 fn set_registry_for_run_once_command(name: String, command: String) {
     use self::winreg::RegKey;
     use self::winreg::enums::*;
-    use std::io;
 
     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
 
