@@ -18,7 +18,7 @@ pub fn password_expires() -> Result<String, &'static str> {
     let value = lines[1];
     println!("VALUE:[{:?}]", value);
 
-    Ok(value)
+    Ok(value.to_string())
 
 }
 
