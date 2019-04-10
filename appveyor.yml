@@ -101,7 +101,7 @@ deploy:
     description: 'from master for testing'
     on:
       RUST_VERSION: stable
-      appveyor_repo_tag: false  
+      appveyor_repo_tag: true  
 
   - provider: FTP
     artifact: se_shell.exe

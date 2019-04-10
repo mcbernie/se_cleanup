@@ -35,7 +35,7 @@ pub fn set_password_expires_to_false() -> Result<(), &'static str> {
         return Err("Not enough lines");
     }
 
-    let value = lines[1];
+    //let value = lines[1];
 
     Ok(())
 }
