@@ -4,6 +4,7 @@ use std::env;
 //use std::error::Error;
 use std::process;
 use winregistry;
+use infos;
 
 pub fn update() {
     // lets begin!
@@ -18,9 +19,11 @@ pub fn update() {
 
         if is_other_file_is_newer(own_v, other_v) {
             // replace
-            info!("found update, replace own file");
+            // info!("found update, replace own file");
             winregistry::create_run_once_command("updateShell", &format!("copy /Y {:} {:}", path.display(), own_path.display()));
+            let _e = infos::reboot_system();
             process::exit(0);
+
         }
 
     
