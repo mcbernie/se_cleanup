@@ -22,7 +22,7 @@ pub fn update() {
             // info!("found update, replace own file");
             winregistry::create_run_once_command("updateShell", &format!("copy /Y {:} {:}", path.display(), own_path.display()));
             let _e = infos::reboot_system();
-            process::exit(0);
+            //process::exit(0);
 
         }
 
