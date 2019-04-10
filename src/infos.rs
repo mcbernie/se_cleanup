@@ -4,7 +4,7 @@
 pub fn password_expires() -> Result<bool, String> {
     use std::process::Command;
     let output = Command::new("wmic")
-        .args(&["useraccount", "where" ,"\"Name='se_user'\"" ,"GET", "PasswordExpires"])
+        .args(&["useraccount where \"Name='se_user'\" GET PasswordExpires"])
         .output()
         .expect("failed to execute wmic useraccount");
 
@@ -26,7 +26,7 @@ pub fn password_expires() -> Result<bool, String> {
 pub fn set_password_expires_to_false() -> Result<(), &'static str> {
     use std::process::Command;
     let output = Command::new("wmic")
-        .args(&["useraccount", "where", "\"Name='se_user'\"", "SET", "PasswordExpires=false"])
+        .args(&["useraccount where \"Name='se_user'\" SET PasswordExpires=false"])
         .output()
         .expect("failed to execute wmic useraccount to set passwordexpires");
     // get second line of output
@@ -58,7 +58,7 @@ pub fn set_password_expires_to_false() -> Result<(), &'static str> {
 pub fn reboot_system() -> Result<(), &'static str> {
     use std::process::Command;
     let output = Command::new("wmic")
-        .args(&["os", "where", "Primary='TRUE'", "reboot"])
+        .args(&["os where Primary='TRUE' reboot"])
         .output()
         .expect("failed to execute Primary");
 
