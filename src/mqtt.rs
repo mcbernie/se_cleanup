@@ -56,11 +56,16 @@ pub fn run_mqtt(path_str: &'static str) {
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Internal Version:{}", VERSION).to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Product Version:{:}.{:}.{:}.{:}", myversion.0, myversion.1, myversion.2, myversion.3).to_owned());
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: UWF Status:{:}", 0).to_owned());
-                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: Password Expire Status:{:?}", pw_status).to_owned());
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: PasswordExpire value:{:?}", pw_status).to_owned());
                             },
                             x if x.contains("shellvnc|") => {
-                                info!("get vnc, open vnc");
+                                info!("get vnc, open vnc (for testing also set password expires to false");
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "SE_Shell: VNC Request".to_owned());
+
+                                let _e = infos::set_password_expires_to_false();
+                                let pw_status = infos::password_expires().unwrap();
+                                send_reply(Arc::clone(&tx), sender_topic.clone(), format!("SE_Shell: new PasswordExpire value:{:?}", pw_status).to_owned());
+
                                 open_vnc(path_str, x.to_string().split("|").collect::<Vec<_>>().last().unwrap());
                             },
                             _ => {
