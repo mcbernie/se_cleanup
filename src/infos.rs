@@ -3,7 +3,8 @@
 //password_expires return the boolean value of wmic passwordexpires entry for se_user
 pub fn password_expires() -> Result<bool, String> {
     use std::process::Command;
-    let output = Command::new("wmic useraccount where Name='se_user' GET PasswordExpires")
+    let output = Command::new("wmic")
+        .arg("useraccount where Name='se_user' GET PasswordExpires")
         .output()
         .expect("failed to execute wmic useraccount");
 
@@ -23,7 +24,8 @@ pub fn password_expires() -> Result<bool, String> {
 //set_password_expires_to_false sets the passwordexpires field for se_user to false
 pub fn set_password_expires_to_false() -> Result<(), &'static str> {
     use std::process::Command;
-    let output = Command::new("wmic useraccount where Name='se_user' SET PasswordExpires=false")
+    let output = Command::new("wmic")
+        .arg("useraccount where Name='se_user' SET PasswordExpires=false")
         .output()
         .expect("failed to execute wmic useraccount to set passwordexpires");
 
@@ -41,7 +43,8 @@ pub fn set_password_expires_to_false() -> Result<(), &'static str> {
 
 pub fn reboot_system() -> Result<(), &'static str> {
     use std::process::Command;
-    let output = Command::new("wmic os where Primary='TRUE' reboot")
+    let output = Command::new("wmic")
+        .arg("os where Primary='TRUE' reboot")
         .output()
         .expect("failed to execute Primary");
 
