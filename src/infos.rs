@@ -1,6 +1,6 @@
 
 
-//password_expires return the boolean value of wmic passwordexpires entry for se_user
+///return the boolean value of wmic passwordexpires entry for se_user
 pub fn password_expires() -> Result<bool, String> {
     use std::process::Command;
     let output = Command::new("cmd")
@@ -22,55 +22,47 @@ pub fn password_expires() -> Result<bool, String> {
 
 }
 
-//set_password_expires_to_false sets the passwordexpires field for se_user to false
-pub fn set_password_expires_to_false() -> Result<(), &'static str> {
+///sets the passwordexpires field for se_user to false
+pub fn set_password_expires_to_false() {
     use std::process::Command;
     let output = Command::new("cmd")
         .args(&["/C","wmic useraccount where Name='se_user' SET PasswordExpires=false"])
         .output()
         .expect("failed to execute wmic useraccount to set passwordexpires");
-    // get second line of output
     let _out = String::from_utf8_lossy(&output.stdout);
-
-
-    /*let output_pwage = Command::new("net")
-        .args(&["accounts","/MaxPWAge:unlimited"])
-        .output()
-        .expect("failed to execute wmic useraccount");
-
-    let _out_pwage = String::from_utf8_lossy(&output_pwage.stdout);
-    //let out_pwage_err = String::from_utf8_lossy(&output_pwage.stderr);
-
-
-    let output_epxires = Command::new("net")
-        .args(&["user","se_user/expires:never"])
-        .output()
-        .expect("failed to execute wmic useraccount");
-
-    let _out_epxires = String::from_utf8_lossy(&output_epxires.stdout);
-    //let out_epxires_err = String::from_utf8_lossy(&output_epxires.stderr);
-    */
-
-
-    Ok(())
 }
 
-pub fn reboot_system() -> Result<(), &'static str> {
+///instant reboot of the system
+pub fn reboot_system() {
     use std::process::Command;
-    let output = Command::new("cmd")
+    let _output = Command::new("cmd")
         .args(&["/C", "wmic os where Primary='TRUE' reboot"])
         .output()
         .expect("failed to execute Primary");
-
-    // get second line of output
-    let _out = String::from_utf8_lossy(&output.stdout);
-    /*let lines: Vec<&str> = out.split("\r\n").collect();
-    if lines.len() < 2 {
-        return Err("Not enough lines");
-    }*/
-
-    //let value = lines[1];
-
-    Ok(())
 }
 
+///removes all files in Logs dir of Jackpot folder if they older than 30 days
+pub fn cleanup_logfiles() {
+    use std::process::Command;
+    let output = Command::new("cmd")
+        .args(&["/C", "ForFiles /p \"C:\\Jackpot\\Logs\" /s /d -30 /c \"cmd /c del @file\""])
+        .output()
+        .expect("failed to remove all logs older than 30 days");
+
+    let _out = String::from_utf8_lossy(&output.stdout);
+}
+
+//next step optimising
+/*fn wmic(command: &'static str) -> Result<String, String> {
+    use std::process::Command;
+    let output = Command::new("cmd")
+        .args(&["/C", "wmic", command])
+        .output()
+        .expect(&format!("Error on call wmic command: {:?}", command));
+
+    if output.status.success() {
+        Ok(String::from_utf8_lossy(&output.stdout).to_string())
+    } else {
+        Err(String::from_utf8_lossy(&output.stderr).to_string())
+    }
+}*/

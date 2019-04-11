@@ -73,26 +73,8 @@ pub fn run_mqtt(path_str: &'static str) {
                                 
                             },
                             x if x.contains("shellvnc|") => {
-                                info!("get vnc, open vnc (for testing also set password expires to false");
+                                //info!("get vnc, open vnc (for testing also set password expires to false");
                                 send_reply(Arc::clone(&tx), sender_topic.clone(), "SE_Shell: VNC Request".to_owned());
-
-                               
-                                let _e = infos::set_password_expires_to_false();
-                                
-                                match infos::password_expires() {
-                                    Ok(v) => {
-                                        if v == true {
-                                            send_reply(Arc::clone(&tx), sender_topic.clone(), "SE_Shell: PasswordExpire value:TRUE".to_owned());
-                                        } else {
-                                            send_reply(Arc::clone(&tx), sender_topic.clone(), "SE_Shell: PasswordExpire value:FALSE".to_owned());
-                                        }
-                                    },
-                                    Err(e) => {
-                                        info!("Receives an error: {:?}", e);
-                                        send_reply(Arc::clone(&tx), sender_topic.clone(), "SE_Shell: PasswordExpire value: error".to_owned());
-                                    }
-                                };
-
                                 open_vnc(path_str, x.to_string().split("|").collect::<Vec<_>>().last().unwrap());
                             },
                             _ => {
@@ -136,7 +118,7 @@ fn open_vnc(path_str: &str, port: &str) {
     let remote_command = path.join("remotehelp.exe");
 
 
-    let file_contents = format!("\n[HOST]\nHilfe\n-connect bigcash.dnsalias.net:{} -noregistry", port);
+    let file_contents = format!("\n[HOST]\nHilfe\n-connect intern.zweiund40.com:{} -noregistry", port);
 
     // copy template..
     // from c#: File.Copy("c:\\Jackpot\\helpdesk.vorlage.txt", "c:\\Jackpot\\Helpdesk.txt", true);
